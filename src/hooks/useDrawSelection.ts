@@ -1,5 +1,5 @@
-import { useCallback, useState } from "react";
-import { useSelectionContext } from "@context/ImageAreaSelectorProvider";
+import { useCallback, useState, useContext } from "react";
+import { SelectionContext } from "@context/ImageAreaSelectorContext";
 import { Selection } from "@type/ImageAreaSelectorType";
 import { ImageSelectorName } from "@constant/ImageSelectorValue";
 
@@ -7,7 +7,8 @@ const useDrawSelection = (
   ref: React.MutableRefObject<HTMLDivElement | null>,
   id?: number,
 ) => {
-  const { imgBoundary, selections, setSelections } = useSelectionContext();
+  const { imgBoundary, selections, setSelections } =
+    useContext(SelectionContext);
   const [startPoint, setStartPoint] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [isOverlap, setIsOverlap] = useState(false);

@@ -1,5 +1,6 @@
+import { useContext } from "react";
 import styled from "@emotion/styled";
-import { useSelectionContext } from "@context/ImageAreaSelectorProvider";
+import { SelectionContext } from "@context/ImageAreaSelectorContext";
 import { Selection } from "@type/ImageAreaSelectorType";
 
 const Wrapper = styled.div`
@@ -12,7 +13,8 @@ const Wrapper = styled.div`
 `;
 
 function DataPreview() {
-  const { selections, imgBoundary, imgIntrinsicSize } = useSelectionContext();
+  const { selections, imgBoundary, imgIntrinsicSize } =
+    useContext(SelectionContext);
 
   const formattData = selections.map((selection: Selection) => {
     return {

@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { SelectionContext } from "@context/ImageAreaSelectorContext";
+import ImageAreaSelectorProvider from "@context/ImageAreaSelectorProvider";
 import { Theme } from "@emotion/react";
 import DataPreview from "@component/ImageAreaSelector/DataPreview";
 import ImagePreview from "@component/ImageAreaSelector/ImagePreview";
-import SelectionContext from "@context/ImageAreaSelectorProvider";
-import { useSelectionContext } from "@context/ImageAreaSelectorProvider";
 import ImageUploader from "@component/ImageAreaSelector/ImageUploader";
 
 const Container = styled.div`
@@ -46,7 +46,7 @@ const Image = styled.img`
 
 const ImageArea = () => {
   const { setImgIntrinsicSize, setImgBoundary, imgBoundary } =
-    useSelectionContext();
+    useContext(SelectionContext);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const { width, height, naturalWidth, naturalHeight } = e.currentTarget;
@@ -89,8 +89,8 @@ const ImageArea = () => {
 
 export const ImageAreaSelector = () => {
   return (
-    <SelectionContext>
+    <ImageAreaSelectorProvider>
       <ImageArea />
-    </SelectionContext>
+    </ImageAreaSelectorProvider>
   );
 };

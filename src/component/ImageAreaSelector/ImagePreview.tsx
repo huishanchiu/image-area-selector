@@ -1,7 +1,7 @@
-import { useRef } from "react";
+import { useMemo, useRef, useContext } from "react";
+import { SelectionContext } from "@context/ImageAreaSelectorContext";
 import styled from "@emotion/styled";
 import ImageSelector from "@component/ImageAreaSelector/ImageSelector";
-import { useSelectionContext } from "@context/ImageAreaSelectorProvider";
 import useDrawSelect from "@hooks/useDrawSelection";
 import { Selection } from "@type/ImageAreaSelectorType";
 
@@ -21,7 +21,17 @@ const ImagePreview = (props: Props) => {
   const imgRef = useRef<HTMLDivElement | null>(null);
   const { startDrawingSelection, updateSelectionArea, stopDrawingSelection } =
     useDrawSelect(imgRef);
-  const { selections } = useSelectionContext();
+  const { selections } = useContext(SelectionContext);
+
+  const idMapRef = useRef<Map<number, number>>(new Map());
+
+  useMemo(() => {
+    selections.forEach((selection, index) => {
+      if (!idMapRef.current.has(selection.id)) {
+        idMapRef.current.set(selection.id, index + 1);
+      }
+    });
+  }, [selections]);
 
   return (
     <Wrapper
@@ -30,9 +40,9 @@ const ImagePreview = (props: Props) => {
       onMouseUp={stopDrawingSelection}
     >
       <div ref={imgRef}>{children}</div>
-      {selections.map((selection: Selection, index: number) => (
+      {selections.map((selection: Selection) => (
         <ImageSelector
-          index={index + 1}
+          index={idMapRef.current.get(selection.id) || 0}
           key={selection.id}
           selection={selection}
         />
