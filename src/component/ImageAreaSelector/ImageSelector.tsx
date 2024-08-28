@@ -1,4 +1,4 @@
-import { useRef, useCallback, memo } from "react";
+import { useRef, useCallback } from "react";
 import styled from "@emotion/styled";
 import { useTheme, Theme } from "@emotion/react";
 import { SelectionStatus } from "@type/ImageAreaSelectorType";
@@ -135,6 +135,13 @@ const ImageSelector = (props: Props) => {
     [startResizingSelection, id, initX, initY, width, height, selection],
   );
 
+  const handleMoving = useCallback(
+    (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      updateSelectionPosition(e);
+    },
+    [updateSelectionPosition],
+  );
+
   return (
     <Wrapper
       ref={rectRef}
@@ -144,7 +151,7 @@ const ImageSelector = (props: Props) => {
       y={initY}
       warnStatus={warnStatus}
       onMouseDown={startMovingSelection}
-      onMouseMove={updateSelectionPosition}
+      onMouseMove={handleMoving}
       onMouseUp={stopMovingSelection}
     >
       <Index>{index}</Index>
@@ -169,4 +176,4 @@ const ImageSelector = (props: Props) => {
   );
 };
 
-export default memo(ImageSelector);
+export default ImageSelector;
